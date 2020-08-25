@@ -407,7 +407,7 @@ function RageUI.Banner()
     if CurrentMenu ~= nil then
         if CurrentMenu() and (CurrentMenu.Display.Header) then
             RageUI.ItemsSafeZone(CurrentMenu)
-            if CurrentMenu.Sprite.Dictionary then
+            if CurrentMenu.Sprite ~= nil then
                 if(CurrentMenu.Sprite.Dictionary == "commonmenu") then
                     RenderSprite(CurrentMenu.Sprite.Dictionary, CurrentMenu.Sprite.Texture, CurrentMenu.X, CurrentMenu.Y, RageUI.Settings.Items.Title.Background.Width + CurrentMenu.WidthOffset, RageUI.Settings.Items.Title.Background.Height, CurrentMenu.Sprite.Color.R, CurrentMenu.Sprite.Color.G, CurrentMenu.Sprite.Color.B, CurrentMenu.Sprite.Color.A)
                 else 
