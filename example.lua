@@ -53,7 +53,7 @@ panelsMenu:DisplayGlare(true)
 panelsMenu.EnableMouse = true
 panelsMenu:DisplayInstructionalButton(false)
 
--- It's not required to use a sprite.
+-- It's not required to use a sprite banner.
 heritageMenu:SetRectangleBanner(0,25,0,255)
 panelsMenu:DisplayGlare(true)
 
