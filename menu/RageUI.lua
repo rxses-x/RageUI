@@ -635,12 +635,10 @@ function RageUI.AddControl(Menu, Type, Enabled, Group, Control)
         table.insert(Menu.Controls.Enabled[Type], {Group, Control})
     else    
         table.insert(Menu.Controls.Disabled[Type], {Group, Control})
-        print("New " .. Type .. " disabled")
     end
 end
 
 function RageUI.RemoveControl(Menu, Type, Enabled, Group, Control)
-    print("called")
     if Enabled then
         for key, control in pairs(Menu.Controls.Enabled[Type]) do
             if control[1] == Group and control[2] == Control then
