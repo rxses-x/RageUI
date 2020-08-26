@@ -142,13 +142,13 @@ function RageUI.Item.SliderProgress(Label, Items, StartedAtIndex, Description, S
                 if (type(Style.ProgressBackgroundColor) == "table") then
                     RenderRectangle(CurrentMenu.X + SettingsSlider.Background.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Background.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Background.Width, SettingsSlider.Background.Height, Style.ProgressBackgroundColor.R, Style.ProgressBackgroundColor.G, Style.ProgressBackgroundColor.B, Style.ProgressBackgroundColor.A)
                 else
-                    error("Style ProgressBackgroundColor is not a table or undefined")
+                    RenderRectangle(CurrentMenu.X + SettingsSlider.Background.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Background.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Background.Width, SettingsSlider.Background.Height, 0, 0, 0, 255)
                 end
 
                 if (type(Style.ProgressColor) == "table") then
                     RenderRectangle(CurrentMenu.X + SettingsSlider.Slider.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Slider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, (((SettingsSlider.Slider.Width) / (#Items - 1)) * (Index[Option].Current - 1)), SettingsSlider.Slider.Height, Style.ProgressColor.R, Style.ProgressColor.G, Style.ProgressColor.B, Style.ProgressColor.A)
                 else
-                    error("Style ProgressColor is not a table or undefined")
+                    RenderRectangle(CurrentMenu.X + SettingsSlider.Slider.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Slider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, (((SettingsSlider.Slider.Width) / (#Items - 1)) * (Index[Option].Current - 1)), SettingsSlider.Slider.Height, 255, 255, 255, 255)
                 end
 
                 RageUI.ItemOffset = RageUI.ItemOffset + SettingsButton.Rectangle.Height

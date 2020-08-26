@@ -32,7 +32,8 @@ local Items = {}
 for i = 1, 10 do
     table.insert(Items, i)
 end
-local startFrom = nil
+
+local values = {}
 
 ---@type Item
 function RageUI.Item.UISliderHeritage(Label, StartedAtIndex, Description, Actions, Value)
@@ -47,13 +48,18 @@ function RageUI.Item.UISliderHeritage(Label, StartedAtIndex, Description, Action
             ---@type number
             local Option = RageUI.Options + 1
 
+            local startFrom = 0
+
             if CurrentMenu.Pagination.Minimum <= Option and CurrentMenu.Pagination.Maximum >= Option then
 
                 ---@type number
                 local value = Value or 0.1
                 local Selected = CurrentMenu.Index == Option
-                if (startFrom == nil) then
+
+                if (values[Option] == nil) then
                     startFrom = StartedAtIndex
+                else 
+                    startFrom = values[Option]
                 end
 
                 ---@type boolean
@@ -138,8 +144,10 @@ function RageUI.Item.UISliderHeritage(Label, StartedAtIndex, Description, Action
                         Actions.onHovered();
                     end
                 end
-            end
 
+                values[Option] = startFrom
+            end
+            
             RageUI.Options = RageUI.Options + 1
         end
     end
