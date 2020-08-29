@@ -96,9 +96,6 @@ function RageUI.Button(Label, Description, Style, Enabled, Callback, Submenu)
                 RageUI.ItemsDescription(CurrentMenu, Description, Selected);
 
                 if (Enabled) then
-                    if (Callback.onHovered ~= nil) and (Hovered) then
-                        Callback.onHovered();
-                    end
                     if Selected and (CurrentMenu.Controls.Select.Active or (Hovered and CurrentMenu.Controls.Click.Active)) then
                         local Audio = RageUI.Settings.Audio
                         RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef)
