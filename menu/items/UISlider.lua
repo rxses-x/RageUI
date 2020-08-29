@@ -1,18 +1,3 @@
----
---- @author Dylan MALANDAIN
---- @version 2.0.0
---- @since 2020
----
---- RageUI Is Advanced UI Libs in LUA for make beautiful interface like RockStar GAME.
----
----
---- Commercial Info.
---- Any use for commercial purposes is strictly prohibited and will be punished.
----
---- @see RageUI
----
-
-
 ---@type table
 local SettingsButton = {
     Rectangle = { Y = 0, Width = 431, Height = 38 },
@@ -32,26 +17,19 @@ local SettingsSlider = {
     RightArrow = { Dictionary = "commonmenutu", Texture = "arrowright", X = 400, Y = 11.5, Width = 15, Height = 15 },
 }
 
----@type table Index of all List Items
-local Index = { }
-
----@type Item
-function RageUI.Item.Slider(Label, Items, StartedAtIndex, Description, Divider, Style, Enabled, Actions)
+function RageUI.Slider(Label, ProgressStart, ProgressMax, Description, Divider, Style, Enabled, Actions)
 
     ---@type table
     local CurrentMenu = RageUI.CurrentMenu;
     local Audio = RageUI.Settings.Audio
-
     if CurrentMenu ~= nil then
         if CurrentMenu() then
-
-
+            local Items = {}
+            for i = 1, ProgressMax do
+                table.insert(Items, i)
+            end
             ---@type number
             local Option = RageUI.Options + 1
-
-            if (Index[Option] == nil) then
-                Index[Option] = { Current = StartedAtIndex }
-            end
 
             if CurrentMenu.Pagination.Minimum <= Option and CurrentMenu.Pagination.Maximum >= Option then
 
@@ -141,10 +119,8 @@ function RageUI.Item.Slider(Label, Items, StartedAtIndex, Description, Divider, 
                 else
                     error("UICheckBox Style is not a `table`")
                 end
-
                 RenderRectangle(CurrentMenu.X + SettingsSlider.Background.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Background.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Background.Width, SettingsSlider.Background.Height, 4, 32, 57, 255)
-                RenderRectangle(CurrentMenu.X + SettingsSlider.Slider.X + (((SettingsSlider.Background.Width - SettingsSlider.Slider.Width) / (#Items - 1)) * (Index[Option].Current - 1)) + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Slider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Slider.Width, SettingsSlider.Slider.Height, 57, 116, 200, 255)
-
+                RenderRectangle(CurrentMenu.X + SettingsSlider.Slider.X + (((SettingsSlider.Background.Width - SettingsSlider.Slider.Width) / (#Items - 1)) * (ProgressStart - 1)) + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Slider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Slider.Width, SettingsSlider.Slider.Height, 57, 116, 200, 255)
                 if Divider then
                     RenderRectangle(CurrentMenu.X + SettingsSlider.Divider.X + CurrentMenu.WidthOffset, CurrentMenu.Y + SettingsSlider.Divider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Divider.Width, SettingsSlider.Divider.Height, 245, 245, 245, 255)
                 end
@@ -154,43 +130,30 @@ function RageUI.Item.Slider(Label, Items, StartedAtIndex, Description, Divider, 
                 RageUI.ItemsDescription(CurrentMenu, Description, Selected);
 
                 if Selected and (CurrentMenu.Controls.Left.Active or (CurrentMenu.Controls.Click.Active and LeftArrowHovered)) and not (CurrentMenu.Controls.Right.Active or (CurrentMenu.Controls.Click.Active and RightArrowHovered)) then
-                    Index[Option].Current = Index[Option].Current - 1
-
-                    if Index[Option].Current < 1 then
-                        Index[Option].Current = #Items
+                    ProgressStart = ProgressStart - 1
+                    if ProgressStart < 1 then
+                        ProgressStart = #Items
                     end
                     if (Actions.onSliderChange ~= nil) then
-                        Citizen.CreateThread(function()
-                            Actions.onSliderChange(Index[Option].Current);
-                        end)
+                        Actions.onSliderChange(ProgressStart);
                     end
                     RageUI.PlaySound(Audio[Audio.Use].LeftRight.audioName, Audio[Audio.Use].LeftRight.audioRef)
                 elseif Selected and (CurrentMenu.Controls.Right.Active or (CurrentMenu.Controls.Click.Active and RightArrowHovered)) and not (CurrentMenu.Controls.Left.Active or (CurrentMenu.Controls.Click.Active and LeftArrowHovered)) then
-                    Index[Option].Current = Index[Option].Current + 1
-                    if Index[Option].Current > #Items then
-                        Index[Option].Current = 1
+                    ProgressStart = ProgressStart + 1
+                    if ProgressStart > #Items then
+                        ProgressStart = 1
                     end
                     if (Actions.onSliderChange ~= nil) then
-                        Citizen.CreateThread(function()
-                            Actions.onSliderChange(Index[Option].Current);
-                        end)
+                        Actions.onSliderChange(ProgressStart);
                     end
                     RageUI.PlaySound(Audio[Audio.Use].LeftRight.audioName, Audio[Audio.Use].LeftRight.audioRef)
                 end
 
                 if Selected and (CurrentMenu.Controls.Select.Active or ((Hovered and CurrentMenu.Controls.Click.Active) and (not LeftArrowHovered and not RightArrowHovered))) then
                     if (Actions.onSelected ~= nil) then
-                        Citizen.CreateThread(function()
-                            Actions.onSelected(Index[Option].Current);
-                        end)
+                        Actions.onSelected(ProgressStart);
                     end
                     RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef)
-                end
-
-                if (Hovered) then
-                    if (Actions.onHovered ~= nil) then
-                        Actions.onHovered();
-                    end
                 end
             end
 
