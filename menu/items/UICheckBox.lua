@@ -1,18 +1,3 @@
----
---- @author Dylan MALANDAIN
---- @version 2.0.0
---- @since 2020
----
---- RageUI Is Advanced UI Libs in LUA for make beautiful interface like RockStar GAME.
----
----
---- Commercial Info.
---- Any use for commercial purposes is strictly prohibited and will be punished.
----
---- @see RageUI
----
-
-
 ---@type table
 local SettingsButton = {
     Rectangle = { Y = 0, Width = 431, Height = 38 },
@@ -41,9 +26,6 @@ RageUI.CheckboxStyle = {
     Cross = 2
 }
 
----@type table Index of all List Items
-local Index = { }
-
 ---StyleCheckBox
 ---@param Selected number
 ---@param Checked boolean
@@ -71,25 +53,16 @@ local function StyleCheckBox(Selected, Checked, Box, BoxSelect, OffSet)
     end
 end
 
----@type Item
-function RageUI.Item.Checkbox(Label, Description, Checked, Style, Actions)
 
+function RageUI.Checkbox(Label, Description, Checked, Style, Actions)
     ---@type table
     local CurrentMenu = RageUI.CurrentMenu;
-
     if CurrentMenu ~= nil then
         if CurrentMenu() then
 
-            local Option = RageUI.Options + 1
-            if (Index[Option] == nil) then
-                Index[Option] = { Current = Checked }
-            end
-
             ---@type number
             local Option = RageUI.Options + 1
-
             if CurrentMenu.Pagination.Minimum <= Option and CurrentMenu.Pagination.Maximum >= Option then
-
                 ---@type number
                 local Selected = CurrentMenu.Index == Option
                 local LeftBadgeOffset = ((Style.LeftBadge == RageUI.BadgeStyle.None or Style.LeftBadge == nil) and 0 or 27)
@@ -102,10 +75,8 @@ function RageUI.Item.Checkbox(Label, Description, Checked, Style, Actions)
                 ---@type boolean
                 if CurrentMenu.EnableMouse == true and (CurrentMenu.CursorStyle == 0) or (CurrentMenu.CursorStyle == 1) then
                     Hovered = RageUI.ItemsMouseBounds(CurrentMenu, Selected, Option, SettingsButton);
-                    if Actions["onHovered"] ~= nil then
-                        if (Hovered) then
-                            Actions['onHovered']();
-                        end
+                    if (Hovered) then
+                        Actions['onHovered']();
                     end
                 end
                 if Selected then
@@ -165,43 +136,35 @@ function RageUI.Item.Checkbox(Label, Description, Checked, Style, Actions)
                                 BoxOffset = MeasureStringWidth(Style.RightLabel, 0, 0.35)
                             end
                         end
-
                     end
 
                     BoxOffset = RightBadgeOffset + BoxOffset
                     if Style.Style ~= nil then
                         if Style.Style == RageUI.CheckboxStyle.Tick then
-                            StyleCheckBox(Selected, Index[Option].Current, 2, 4, BoxOffset)
+                            StyleCheckBox(Selected, Checked, 2, 4, BoxOffset)
                         elseif Style.Style == RageUI.CheckboxStyle.Cross then
-                            StyleCheckBox(Selected, Index[Option].Current, 5, 6, BoxOffset)
+                            StyleCheckBox(Selected, Checked, 5, 6, BoxOffset)
                         else
-                            StyleCheckBox(Selected, Index[Option].Current, 2, 4, BoxOffset)
+                            StyleCheckBox(Selected, Checked, 2, 4, BoxOffset)
                         end
                     else
-                        StyleCheckBox(Selected, Index[Option].Current, 2, 4, BoxOffset)
+                        StyleCheckBox(Selected, Checked, 2, 4, BoxOffset)
                     end
 
                     if Selected and (CurrentMenu.Controls.Select.Active or (Hovered and CurrentMenu.Controls.Click.Active)) and (Style.Enabled == true or Style.Enabled == nil) then
                         local Audio = RageUI.Settings.Audio
                         RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef)
-                        Index[Option].Current = not Index[Option].Current
-                        if (Index[Option].Current) then
-                            Index[Option].Current = true
-                            if Actions.onChecked ~= nil then
-                                Citizen.CreateThread(function()
-                                    Actions.onChecked();
-                                end)
+                        Checked = not Checked
+                        if (Checked) then
+                            if (Actions.onChecked ~= nil) then
+                                Actions.onChecked();
                             end
                         else
-                            Index[Option].Current = false
-                            if Actions.onUnChecked ~= nil then
-                                Citizen.CreateThread(function()
-                                    Actions.onUnChecked();
-                                end)
+                            if (Actions.onUnChecked ~= nil) then
+                                Actions.onUnChecked();
                             end
                         end
                     end
-
                 else
                     error("UICheckBox Style is not a `table`")
                 end
@@ -210,17 +173,8 @@ function RageUI.Item.Checkbox(Label, Description, Checked, Style, Actions)
 
                 RageUI.ItemsDescription(CurrentMenu, Description, Selected)
 
-                if (((CurrentMenu.Controls.Select.Active or (Hovered and CurrentMenu.Controls.Click.Active)) and Selected)) then
-                    if Actions.onSelected ~= nil then
-                        Citizen.CreateThread(function()
-                            Actions.onSelected(Index[Option].Current);
-                        end)
-                    end
-                end
-                if (Selected) then
-                    if (Actions.onActive ~= nil) then
-                        Actions.onActive();
-                    end
+                if (Actions.onSelected ~= nil) and (Selected) then
+                    Actions.onSelected(Checked);
                 end
 
             end
