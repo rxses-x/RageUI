@@ -34,47 +34,16 @@ Citizen.CreateThread(function()
         Citizen.Wait(1.0)
 
         RageUI.IsVisible(RMenu:Get('showcase', 'main'), function()
-            for i = 1, 100 do
 
-                RageUI.Button('Basic Items', nil, true, {
+                RageUI.Button('Basic Items', nil, {}, true, {
                     onHovered = function()
-
+                        Visual.Subtitle("onHovered", 100)
                     end,
                     onSelected = function()
-
-                    end,
-                    onActive = function()
-
+                        Visual.Subtitle("onSelected", 100)
                     end,
                 });
 
-            end
-        end, function()
-
-        end)
-
-
-    end
-end)
-
-Citizen.CreateThread(function()
-    while (true) do
-        Citizen.Wait(1.0)
-
-        RageUI.IsVisible(RMenu:Get('showcase', 'submenu'), function()
-            for i = 1, 100 do
-                RageUI.Button('Sub Menu', nil, true, {
-                    onHovered = function()
-
-                    end,
-                    onSelected = function()
-
-                    end,
-                    onActive = function()
-
-                    end,
-                });
-            end
         end, function()
 
         end)
