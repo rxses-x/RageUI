@@ -89,6 +89,7 @@ Citizen.CreateThread(function()
                 end
             })
 
+            RageUI.Separator("Paco is the best.")
 
 
         end, function()
