@@ -30,15 +30,18 @@ Keys.Register('E', 'E', 'Open RageUI Showcase menu default.', function()
 end)
 
 local index = {
-    checkbox = false
+    checkbox = false,
+    list = 2
 }
+
+local description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 Citizen.CreateThread(function()
     while (true) do
         Citizen.Wait(1.0)
 
         RageUI.IsVisible(RMenu:Get('showcase', 'main'), function()
 
-            RageUI.Button('Basic Items', nil, {}, true, {
+            RageUI.Button('Basic Items', description, {}, true, {
                 onHovered = function()
                     Visual.Subtitle("onHovered", 100)
                 end,
@@ -47,7 +50,7 @@ Citizen.CreateThread(function()
                 end,
             });
 
-            RageUI.Checkbox('Checkbox', nil, index.checkbox, {}, {
+            RageUI.Checkbox('Checkbox', description, index.checkbox, {}, {
                 onChecked = function()
                     Visual.Subtitle("onChecked", 100)
                 end,
@@ -59,6 +62,23 @@ Citizen.CreateThread(function()
                     --- Logic on selected items
                 end
             })
+
+            RageUI.List('List Item', {
+                { Name = "Paco", Value = 1 },
+                { Name = "Is", Value = 2 },
+                { Name = "Awesome", Value = 60 },
+                { Name = "Bro", Value = 50 },
+            }, index.list, description, {}, true, {
+                onListChange = function(Index, Item)
+                    index.list = Index;
+                    Visual.Subtitle("onListChange", 100)
+                end,
+                onSelected = function(Index, Item)
+                    Visual.Subtitle("onSelected", 100)
+                end,
+            })
+
+
 
         end, function()
 
