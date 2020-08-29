@@ -1,58 +1,45 @@
----MeasureStringWidth
+---StringToArray
 ---
 --- Reference : Frazzle <3
 ---
 ---@param str string
----@param font number
----@param scale number
----@return _G
----@public
-function MeasureStringWidth(str, font, scale)
-    BeginTextCommandWidth("CELL_EMAIL_BCON")
-    AddTextComponentSubstringPlayerName(str)
-    SetTextFont(font or 0)
-    SetTextScale(1.0, scale or 0)
-    return EndTextCommandGetWidth(true) * 1920
-end
+function StringToArray(str)
+    local charCount = #str
+    local strCount = math.ceil(charCount / 99)
+    local strings = {}
 
----GetCharacterCount
----
---- Reference : Frazzle <3
----
----@param Str string
----@return number
----@public
-function GetCharacterCount(Str)
-    ---@type number
-    local Chars = 0
+    for i = 1, strCount do
+        local start = (i - 1) * 99 + 1
+        local clamp = math.clamp(#string.sub(str, start), 0, 99)
+        local finish = ((i ~= 1) and (start - 1) or 0) + clamp
 
-    for Char in Str:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-        Chars = Chars + 1
+        strings[i] = string.sub(str, start, finish)
     end
 
-    return Chars
+    return strings
 end
+
 
 ---AddText
 ---
 --- Reference : Frazzle <3
 ---
----@param Text string
----@return nil
----@public
-function AddText(Text)
-    ---@type number
-    local Characters = GetCharacterCount(Text)
-    if Characters < 100 then
-        AddTextComponentSubstringPlayerName(Text)
+---@param str string
+function AddText(str)
+    local str = tostring(str)
+    local charCount = #str
+
+    if charCount < 100 then
+        AddTextComponentSubstringPlayerName(str)
     else
-        ---@type number
-        local StringsNeeded = (Characters % 100 == 0) and Characters / 100 or (Characters / 100) + 1
-        for Index = 0, StringsNeeded do
-            AddTextComponentSubstringPlayerName(Text:sub(Index * 100, (Index * 100) + 100))
+        local strings = StringToArray(str)
+
+        for s = 1, #strings do
+            AddTextComponentSubstringPlayerName(strings[s])
         end
     end
 end
+
 
 ---GetLineCount
 ---
