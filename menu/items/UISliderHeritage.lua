@@ -1,17 +1,3 @@
----
---- @author Dylan MALANDAIN
---- @version 2.0.0
---- @since 2020
----
---- RageUI Is Advanced UI Libs in LUA for make beautiful interface like RockStar GAME.
----
----
---- Commercial Info.
---- Any use for commercial purposes is strictly prohibited and will be punished.
----
---- @see RageUI
----
-
 ---@type table
 local SettingsButton = {
     Rectangle = { Y = 0, Width = 431, Height = 38 },
@@ -33,12 +19,8 @@ for i = 1, 10 do
     table.insert(Items, i)
 end
 
-local values = {}
+function RageUI.UISliderHeritage(Label, ItemIndex, Description, Actions, Value)
 
----@type Item
-function RageUI.Item.UISliderHeritage(Label, StartedAtIndex, Description, Actions, Value)
-
-    ---@type table
     local CurrentMenu = RageUI.CurrentMenu;
     local Audio = RageUI.Settings.Audio
 
@@ -48,19 +30,11 @@ function RageUI.Item.UISliderHeritage(Label, StartedAtIndex, Description, Action
             ---@type number
             local Option = RageUI.Options + 1
 
-            local startFrom = 0
-
             if CurrentMenu.Pagination.Minimum <= Option and CurrentMenu.Pagination.Maximum >= Option then
 
                 ---@type number
                 local value = Value or 0.1
                 local Selected = CurrentMenu.Index == Option
-
-                if (values[Option] == nil) then
-                    startFrom = StartedAtIndex
-                else 
-                    startFrom = values[Option]
-                end
 
                 ---@type boolean
                 local LeftArrowHovered, RightArrowHovered = false, false
@@ -96,7 +70,7 @@ function RageUI.Item.UISliderHeritage(Label, StartedAtIndex, Description, Action
                 end
 
                 RenderRectangle(CurrentMenu.X + SettingsSlider.Background.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Background.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Background.Width, SettingsSlider.Background.Height, 4, 32, 57, 255)
-                RenderRectangle(CurrentMenu.X + SettingsSlider.Slider.X + (((SettingsSlider.Background.Width - SettingsSlider.Slider.Width) / (#Items)) * (startFrom)) + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Slider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Slider.Width, SettingsSlider.Slider.Height, 57, 116, 200, 255)
+                RenderRectangle(CurrentMenu.X + SettingsSlider.Slider.X + (((SettingsSlider.Background.Width - SettingsSlider.Slider.Width) / (#Items)) * (ItemIndex)) + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Slider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Slider.Width, SettingsSlider.Slider.Height, 57, 116, 200, 255)
 
                 RenderRectangle(CurrentMenu.X + SettingsSlider.Divider.X + CurrentMenu.WidthOffset, CurrentMenu.Y + SettingsSlider.Divider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Divider.Width, SettingsSlider.Divider.Height, 245, 245, 245, 255)
 
@@ -105,49 +79,36 @@ function RageUI.Item.UISliderHeritage(Label, StartedAtIndex, Description, Action
                 RageUI.ItemsDescription(CurrentMenu, Description, Selected);
 
                 if Selected and (CurrentMenu.Controls.SliderLeft.Active or (CurrentMenu.Controls.Click.Active and LeftArrowHovered)) and not (CurrentMenu.Controls.SliderRight.Active or (CurrentMenu.Controls.Click.Active and RightArrowHovered)) then
-                    startFrom = startFrom - value
-                    if startFrom < 0.1 then
-                        startFrom = 0.0
+                    ItemIndex = ItemIndex - value
+                    if ItemIndex < 0.1 then
+                        ItemIndex = 0.0
                     else
                         RageUI.PlaySound(Audio[Audio.Use].Slider.audioName, Audio[Audio.Use].Slider.audioRef, true)
                     end
                     if (Actions.onListChange ~= nil) then
-                        Citizen.CreateThread(function()
-                            Actions.onListChange(startFrom / 10, startFrom);
-                        end)
+                        Actions.onListChange(ItemIndex / 10, ItemIndex);
                     end
                 elseif Selected and (CurrentMenu.Controls.SliderRight.Active or (CurrentMenu.Controls.Click.Active and RightArrowHovered)) and not (CurrentMenu.Controls.SliderLeft.Active or (CurrentMenu.Controls.Click.Active and LeftArrowHovered)) then
-                    startFrom = startFrom + value
-                    if startFrom > #Items then
-                        startFrom = 10
+                    ItemIndex = ItemIndex + value
+                    if ItemIndex > #Items then
+                        ItemIndex = 10
                     else
                         RageUI.PlaySound(Audio[Audio.Use].Slider.audioName, Audio[Audio.Use].Slider.audioRef, true)
                     end
                     if (Actions.onListChange ~= nil) then
-                        Citizen.CreateThread(function()
-                            Actions.onListChange(startFrom / 10, startFrom);
-                        end)
+                        Actions.onListChange(ItemIndex / 10, ItemIndex);
                     end
                 end
 
                 if Selected and (CurrentMenu.Controls.Select.Active or ((Hovered and CurrentMenu.Controls.Click.Active) and (not LeftArrowHovered and not RightArrowHovered))) then
                     if (Actions.onSelected ~= nil) then
-                        Citizen.CreateThread(function()
-                            Actions.onSelected(startFrom / 10, startFrom);
-                        end)
+                        Actions.onSelected(ItemIndex / 10, ItemIndex);
                     end
                     RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef, false)
                 end
 
-                if (Hovered) then
-                    if (Actions.onHovered ~= nil) then
-                        Actions.onHovered();
-                    end
-                end
-
-                values[Option] = startFrom
             end
-            
+
             RageUI.Options = RageUI.Options + 1
         end
     end
