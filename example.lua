@@ -29,20 +29,36 @@ Keys.Register('E', 'E', 'Open RageUI Showcase menu default.', function()
     RageUI.Visible(RMenu:Get('showcase', 'main'), not RageUI.Visible(RMenu:Get('showcase', 'main')))
 end)
 
+local index = {
+    checkbox = false
+}
 Citizen.CreateThread(function()
     while (true) do
         Citizen.Wait(1.0)
 
         RageUI.IsVisible(RMenu:Get('showcase', 'main'), function()
 
-                RageUI.Button('Basic Items', nil, {}, true, {
-                    onHovered = function()
-                        Visual.Subtitle("onHovered", 100)
-                    end,
-                    onSelected = function()
-                        Visual.Subtitle("onSelected", 100)
-                    end,
-                });
+            RageUI.Button('Basic Items', nil, {}, true, {
+                onHovered = function()
+                    Visual.Subtitle("onHovered", 100)
+                end,
+                onSelected = function()
+                    Visual.Subtitle("onSelected", 100)
+                end,
+            });
+
+            RageUI.Checkbox('Checkbox', nil, index.checkbox, {}, {
+                onChecked = function()
+                    Visual.Subtitle("onChecked", 100)
+                end,
+                onUnChecked = function()
+                    Visual.Subtitle("onUnChecked", 100)
+                end,
+                onSelected = function(Index)
+                    index.checkbox = Index
+                    --- Logic on selected items
+                end
+            })
 
         end, function()
 
