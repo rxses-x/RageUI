@@ -579,7 +579,7 @@ function RageUI.ItemsMouseBounds(CurrentMenu, Selected, Option, SettingsButton)
         if CurrentMenu.Controls.Click.Active then
             CurrentMenu.Index = Option
             local Audio = RageUI.Settings.Audio
-            RageUI.PlaySound(Audio[Audio.Use].Error.audioName, Audio[Audio.Use].Error.audioRef)
+            RageUI.PlaySound(Audio[Audio.Use].UpDown.audioName, Audio[Audio.Use].UpDown.audioRef)
         end
     end
     return Hovered;
