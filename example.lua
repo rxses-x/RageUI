@@ -82,11 +82,13 @@ Citizen.CreateThread(function()
             RageUI.UISliderHeritage('Heritage Item', index.heritage, description, {
                 onSliderChange = function(Float, Index)
                     index.heritage = Index;
+                    Visual.Subtitle("onSliderChange", 100)
                 end,
                 onSelected = function(Float, Index)
-
+                    Visual.Subtitle("onSelected", 100)
                 end
             })
+
 
 
         end, function()
