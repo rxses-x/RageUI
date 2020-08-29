@@ -32,7 +32,9 @@ end)
 local index = {
     checkbox = false,
     list = 2,
-    heritage = 0.5
+    heritage = 0.5,
+    slider = 50,
+    sliderprogress = 50,
 }
 
 local description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur"
@@ -91,6 +93,28 @@ Citizen.CreateThread(function()
 
             RageUI.Separator("Paco is the best.")
 
+            RageUI.Slider('Slider Item', index.slider, 100, description, true, {}, true, {
+                onSliderChange = function(Index)
+                    index.slider = Index
+                    Visual.Subtitle("onSliderChange", 100)
+                end,
+                onSelected = function(Index)
+                    Visual.Subtitle("onSelected", 100)
+                end
+            })
+
+            RageUI.SliderProgress('SliderProgress Item', index.sliderprogress, 100, description, {
+                ProgressBackgroundColor = { R = 255, G = 0, B = 0, A = 200 },
+                ProgressColor = { R = 0, G = 255, B = 0, A = 255 },
+            }, true, {
+                onSliderChange = function(Index)
+                    index.sliderprogress = Index
+                    Visual.Subtitle("onSliderChange", 100)
+                end,
+                onSelected = function(Index)
+                    Visual.Subtitle("onSelected", 100)
+                end
+            })
 
         end, function()
 
