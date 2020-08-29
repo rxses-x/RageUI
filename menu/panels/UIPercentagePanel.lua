@@ -1,18 +1,3 @@
----
---- @author Dylan MALANDAIN
---- @version 2.0.0
---- @since 2020
----
---- RageUI Is Advanced UI Libs in LUA for make beautiful interface like RockStar GAME.
----
----
---- Commercial Info.
---- Any use for commercial purposes is strictly prohibited and will be punished.
----
---- @see RageUI
----
-
-
 local Percentage = {
     Background = { Dictionary = "commonmenu", Texture = "gradient_bgd", Y = 4, Width = 431, Height = 76 },
     Bar = { X = 9, Y = 50, Width = 413, Height = 10 },
@@ -23,19 +8,20 @@ local Percentage = {
     },
 }
 
----@type table PercentageIndex of all PercentagePanel
-local PercentageIndex = { }
-
----@type Panel
-function RageUI.Panel.PercentagePanel(StartedAtPercent, HeaderText, MinText, MaxText, Action, Index)
+---PercentagePanel
+---@param Percent number
+---@param HeaderText string
+---@param MinText string
+---@param MaxText string
+---@param Callback function
+---@param Index number
+---@return nil
+---@public
+function RageUI.PercentagePanel(Percent, HeaderText, MinText, MaxText, Action, Index)
     local CurrentMenu = RageUI.CurrentMenu
 
     if CurrentMenu ~= nil then
         if CurrentMenu() and (Index == nil or (CurrentMenu.Index == Index)) then
-
-            if (PercentageIndex[Index] == nil) then
-                PercentageIndex[Index] = { Value = StartedAtPercent };
-            end
 
             ---@type boolean
             local Hovered = RageUI.IsMouseInBounds(CurrentMenu.X + Percentage.Bar.X + CurrentMenu.SafeZoneSize.X, CurrentMenu.Y + Percentage.Bar.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset - 4, Percentage.Bar.Width + CurrentMenu.WidthOffset, Percentage.Bar.Height + 8)
@@ -46,13 +32,13 @@ function RageUI.Panel.PercentagePanel(StartedAtPercent, HeaderText, MinText, Max
             ---@type number
             local Progress = Percentage.Bar.Width
 
-            if PercentageIndex[Index].Value < 0.0 then
-                PercentageIndex[Index].Value = 0.0
-            elseif PercentageIndex[Index].Value > 1.0 then
-                PercentageIndex[Index].Value = 1.0
+            if Percent < 0.0 then
+                Percent = 0.0
+            elseif Percent > 1.0 then
+                Percent = 1.0
             end
 
-            Progress = Progress * PercentageIndex[Index].Value
+            Progress = Progress * Percent
 
             RenderSprite(Percentage.Background.Dictionary, Percentage.Background.Texture, CurrentMenu.X, CurrentMenu.Y + Percentage.Background.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, Percentage.Background.Width + CurrentMenu.WidthOffset, Percentage.Background.Height)
             RenderRectangle(CurrentMenu.X + Percentage.Bar.X + (CurrentMenu.WidthOffset / 2), CurrentMenu.Y + Percentage.Bar.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, Percentage.Bar.Width, Percentage.Bar.Height, 87, 87, 87, 255)
@@ -74,10 +60,9 @@ function RageUI.Panel.PercentagePanel(StartedAtPercent, HeaderText, MinText, Max
                         Progress = Percentage.Bar.Width
                     end
 
-                    PercentageIndex[Index].Value = math.round(Progress / Percentage.Bar.Width, 2)
-
-                    if (Action.onPercentageChange ~= nil) then
-                        Action.onPercentageChange(PercentageIndex[Index].Value)
+                    Percent = math.round(Progress / Percentage.Bar.Width, 2)
+                    if (Action.onProgressChange ~= nil) then
+                        Action.onProgressChange(Percent)
                     end
                 end
             end
@@ -88,12 +73,9 @@ function RageUI.Panel.PercentagePanel(StartedAtPercent, HeaderText, MinText, Max
                 local Audio = RageUI.Settings.Audio
                 RageUI.PlaySound(Audio[Audio.Use].Slider.audioName, Audio[Audio.Use].Slider.audioRef, true)
                 if (Action.onSelected ~= nil) then
-                    Citizen.CreateThread(function()
-                        Action.onSelected(PercentageIndex[Index].Value);
-                    end)
+                    Action.onSelected(Percent)
                 end
             end
-
         end
     end
 end

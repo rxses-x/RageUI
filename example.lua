@@ -32,7 +32,8 @@ local index = {
         default = { x = 0.5, y = 0.5 },
         horizontal = { x = 0.5 },
         vertical = { y = 0.5 },
-    }
+    },
+    percentage = 0.5
 }
 
 local description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur"
@@ -144,6 +145,15 @@ Citizen.CreateThread(function()
                     index.grid.vertical.y = Y
                 end
             }, 3)
+
+            RageUI.PercentagePanel(index.percentage, 'Header Text', 'Min Text', 'Max Text', {
+                onSelected = function(Percentage)
+
+                end,
+                onProgressChange = function(Percentage)
+                    index.percentage = Percentage
+                end
+            }, 4)
 
         end)
 
