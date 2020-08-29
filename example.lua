@@ -33,7 +33,11 @@ local index = {
         horizontal = { x = 0.5 },
         vertical = { y = 0.5 },
     },
-    percentage = 0.5
+    percentage = 0.5,
+    color = {
+        primary = { 1, 5 },
+        secondary = { 1, 5 }
+    },
 }
 
 local description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur"
@@ -155,6 +159,19 @@ Citizen.CreateThread(function()
                 end
             }, 4)
 
+            RageUI.ColourPanel("Couleur de Paco", RageUI.PanelColour.HairCut, index.color.primary[1], index.color.primary[2], {
+                onColorChange = function(MinimumIndex, CurrentIndex)
+                    index.color.primary[1] = MinimumIndex
+                    index.color.primary[2] = CurrentIndex
+                end
+            }, 6)
+
+            RageUI.ColourPanel("Couleur de paco secondaire", RageUI.PanelColour.HairCut, index.color.secondary[1], index.color.secondary[2], {
+                onColorChange = function(MinimumIndex, CurrentIndex)
+                    index.color.secondary[1] = MinimumIndex
+                    index.color.secondary[2] = CurrentIndex
+                end
+            }, 6)
         end)
 
 
