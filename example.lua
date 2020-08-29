@@ -12,16 +12,9 @@ RMenu:Get('showcase', 'main'):DisplayGlare(false);
 RMenu:Get('showcase', 'main').Closed = function()
     print('Closed Showcase Menu')
 end;
+RMenu:Get('showcase', 'main').EnableMouse = true
+
 RMenu:Get('showcase', 'main').onIndexChange = function(Index)
-    print(Index)
-end
-
-RMenu.Add('showcase', 'submenu', RageUI.CreateSubMenu(RMenu:Get('showcase', 'main'), "SubMenu", "RAGEUI"))
-RMenu:Get('showcase', 'submenu').Closed = function()
-    print('Closed Showcase Menu')
-end;
-
-RMenu:Get('showcase', 'submenu').onIndexChange = function(Index)
     print(Index)
 end
 
@@ -35,9 +28,15 @@ local index = {
     heritage = 0.5,
     slider = 50,
     sliderprogress = 50,
+    grid = {
+        default = { x = 0.5, y = 0.5 },
+        horizontal = { x = 0.5 },
+        vertical = { y = 0.5 },
+    }
 }
 
 local description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur"
+
 Citizen.CreateThread(function()
     while (true) do
         Citizen.Wait(1.0)
@@ -117,6 +116,34 @@ Citizen.CreateThread(function()
             })
 
         end, function()
+
+            RageUI.Grid(index.grid.default.x, index.grid.default.y, 'Top Text', 'Bottom Text', 'Left Text', 'Right Text', {
+                onSelected = function(X, Y)
+
+                end,
+                onPositionChange = function(X, Y)
+                    index.grid.default.x = X
+                    index.grid.default.y = Y
+                end
+            }, 1)
+
+            RageUI.GridHorizontal(index.grid.horizontal.x, 'Left Text', 'Right Text', {
+                onSelected = function(X, Y)
+
+                end,
+                onPositionChange = function(X, Y)
+                    index.grid.horizontal.x = X
+                end
+            }, 2)
+
+            RageUI.GridVertical(index.grid.vertical.y, 'Top Text', 'Bottom Text', {
+                onSelected = function(X, Y)
+
+                end,
+                onPositionChange = function(X, Y)
+                    index.grid.vertical.y = Y
+                end
+            }, 3)
 
         end)
 

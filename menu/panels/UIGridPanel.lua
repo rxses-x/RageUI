@@ -36,18 +36,12 @@ local Grid = {
     },
 }
 
----@type table GridPosition of all GridPanel
-local GridPosition = { }
-
 local function UIGridPanel(Type, StartedX, StartedY, TopText, BottomText, LeftText, RightText, Action, Index)
     local CurrentMenu = RageUI.CurrentMenu
     if CurrentMenu ~= nil then
-        if CurrentMenu() and (Index == nil or (CurrentMenu.Index == Index)) then
-            if (GridPosition[Index] == nil) then
-                GridPosition[Index] = { X = StartedX, Y = StartedY };
-            end
-            local X = Type == GridType.Default and GridPosition[Index].X or Type == GridType.Horizontal and GridPosition[Index].X or Type == GridType.Vertical and 0.5
-            local Y = Type == GridType.Default and GridPosition[Index].Y or Type == GridType.Horizontal and 0.5 or Type == GridType.Vertical and GridPosition[Index].Y
+        if CurrentMenu() and ((CurrentMenu.Index == Index)) then
+            local X = Type == GridType.Default and StartedX or Type == GridType.Horizontal and StartedX or Type == GridType.Vertical and 0.5
+            local Y = Type == GridType.Default and StartedY or Type == GridType.Horizontal and 0.5 or Type == GridType.Vertical and StartedY
             local Hovered = RageUI.IsMouseInBounds(CurrentMenu.X + Grid.Grid.X + CurrentMenu.SafeZoneSize.X + 20, CurrentMenu.Y + Grid.Grid.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset + 20, Grid.Grid.Width + CurrentMenu.WidthOffset - 40, Grid.Grid.Height - 40)
             local Selected = false
             local CircleX = CurrentMenu.X + Grid.Grid.X + (CurrentMenu.WidthOffset / 2) + 20
@@ -94,11 +88,11 @@ local function UIGridPanel(Type, StartedX, StartedY, TopText, BottomText, LeftTe
                     end
                     X = math.round((CircleX - (CurrentMenu.X + Grid.Grid.X + (CurrentMenu.WidthOffset / 2) + 20) + (Grid.Circle.Width / 2)) / (Grid.Grid.Width - 40), 2)
                     Y = math.round((CircleY - (CurrentMenu.Y + Grid.Grid.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset + 20) + (Grid.Circle.Height / 2)) / (Grid.Grid.Height - 40), 2)
-                    if (X ~= GridPosition[Index].X) and (Y ~= GridPosition[Index].Y) then
+                    if (X ~= StartedX) and (Y ~= StartedY) then
                         Action.onPositionChange(X, Y)
                     end
-                    GridPosition[Index].X = X;
-                    GridPosition[Index].Y = Y;
+                    StartedX = X;
+                    StartedY = Y;
                     if X > 1.0 then
                         X = 1.0
                     end
@@ -112,9 +106,7 @@ local function UIGridPanel(Type, StartedX, StartedY, TopText, BottomText, LeftTe
                 local Audio = RageUI.Settings.Audio
                 RageUI.PlaySound(Audio[Audio.Use].Slider.audioName, Audio[Audio.Use].Slider.audioRef, true)
                 if (Action.onSelected ~= nil) then
-                    Citizen.CreateThread(function()
-                        Action.onSelected(X, Y);
-                    end)
+                    Action.onSelected(X, Y);
                 end
             end
 
@@ -122,14 +114,14 @@ local function UIGridPanel(Type, StartedX, StartedY, TopText, BottomText, LeftTe
     end
 end
 
-function RageUI.Panel.Grid(StartedX, StartedY, TopText, BottomText, LeftText, RightText, Action, Index)
+function RageUI.Grid(StartedX, StartedY, TopText, BottomText, LeftText, RightText, Action, Index)
     UIGridPanel(GridType.Default, StartedX, StartedY, TopText, BottomText, LeftText, RightText, Action, Index)
 end
 
-function RageUI.Panel.GridHorizontal(StartedX, LeftText, RightText, Action, Index)
+function RageUI.GridHorizontal(StartedX, LeftText, RightText, Action, Index)
     UIGridPanel(GridType.Horizontal, StartedX, nil, nil, nil, LeftText, RightText, Action, Index)
 end
 
-function RageUI.Panel.GridVertical(StartedY, TopText, BottomText, Action, Index)
+function RageUI.GridVertical(StartedY, TopText, BottomText, Action, Index)
     UIGridPanel(GridType.Vertical, nil, StartedY, TopText, BottomText, nil, nil, Action, Index)
 end
