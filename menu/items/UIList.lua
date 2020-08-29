@@ -152,6 +152,10 @@ function RageUI.List(Label, Items, Index, Description, Style, Enabled, Actions, 
                     if Submenu ~= nil and type(Submenu) == "table" then
                         RageUI.NextMenu = Submenu[Index]
                     end
+                elseif Selected then
+                    if(Actions.onActive ~= nil) then
+                        Citizen.CreateThread(Actions.onActive)
+                    end 
                 end
             end
 
