@@ -53,7 +53,6 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
     Menu.Options = 0
     Menu.Closable = true
     Menu.InstructionalScaleform = RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
-    Menu.InitScaleform = false
     Menu.CursorStyle = 1
 
     if string.starts(Menu.Subtitle, "~") then
@@ -71,6 +70,7 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
             Menu.SubtitleHeight = 0
         end
     end
+
     Citizen.CreateThread(function()
         if not HasScaleformMovieLoaded(Menu.InstructionalScaleform) then
             Menu.InstructionalScaleform = RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
@@ -78,6 +78,9 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
                 Citizen.Wait(0)
             end
         end
+    end)
+
+    Citizen.CreateThread(function()
         local ScaleformMovie = RequestScaleformMovie("MP_MENU_GLARE")
         while not HasScaleformMovieLoaded(ScaleformMovie) do
             Citizen.Wait(0)
@@ -147,13 +150,17 @@ function RageUI.Menus:DisplayInstructionalButton(boolean)
     return self.Display.InstructionalButton;
 end
 
+---SetTitle
+---@param Title string
+---@return nil
+---@public
 function RageUI.Menus:SetTitle(Title)
     self.Title = Title
 end
 
-function RageUI.Menus:SetSizeWidth(Value)
+function RageUI.Menus:SetStyleSize(Value)
     local witdh
-    if Value >= 0 and Value <= 1000 then
+    if Value >= 0 and Value <= 100 then
         witdh = Value
     else
         witdh = 100
@@ -161,6 +168,9 @@ function RageUI.Menus:SetSizeWidth(Value)
     self.WidthOffset = witdh
 end
 
+---GetStyleSize
+---@return any
+---@public
 function RageUI.Menus:GetStyleSize()
     if (self.WidthOffset == 100) then
         return "RageUI"
@@ -171,26 +181,45 @@ function RageUI.Menus:GetStyleSize()
     end
 end
 
+---SetStyleSize
+---@param Int string
+---@return void
+---@public
 function RageUI.Menus:SetCursorStyle(Int)
     self.CursorStyle = Int or 1 or 0
     SetMouseCursorSprite(Int)
 end
 
+---ResetCursorStyle
+---@return void
+---@public
 function RageUI.Menus:ResetCursorStyle()
     self.CursorStyle = 1
     SetMouseCursorSprite(1)
 end
 
+---UpdateCursorStyle
+---@return void
+---@public
 function RageUI.Menus:UpdateCursorStyle()
     SetMouseCursorSprite(self.CursorStyle)
 end
 
+---RefreshIndex
+---@return void
+---@public
 function RageUI.Menus:RefreshIndex()
     self.Index = 1
 end
 
+---SetSubtitle
+---@param Subtitle string
+---@return nil
+---@public
 function RageUI.Menus:SetSubtitle(Subtitle)
+
     self.Subtitle = string.upper(Subtitle) or string.upper(self.Subtitle)
+
     if string.starts(self.Subtitle, "~") then
         self.PageCounterColour = string.sub(self.Subtitle, 1, 3)
     else
@@ -210,32 +239,58 @@ function RageUI.Menus:SetSubtitle(Subtitle)
     end
 end
 
+---PageCounter
+---@param Subtitle string
+---@return nil
+---@public
 function RageUI.Menus:SetPageCounter(Subtitle)
     self.PageCounter = Subtitle
 end
 
-function RageUI.Menus:EditSpriteColor(R,G,B,A)
+---EditSpriteColor
+---@param Colors table
+---@return nil
+---@public
+function RageUI.Menus:EditSpriteColor(color)
     if self.Sprite.Dictionary == "commonmenu" then
-        self.Sprite.Color = { R = tonumber(R) or 255, G = tonumber(G) or 255, B = tonumber(B) or 255, A = tonumber(A) or 255 }
+        self.Sprite.Color = color
     end
 end
-
+---SetPosition
+---@param X number
+---@param Y number
+---@return nil
+---@public
 function RageUI.Menus:SetPosition(X, Y)
     self.X = tonumber(X) or self.X
     self.Y = tonumber(Y) or self.Y
 end
 
+---SetTotalItemsPerPage
+---@param Value number
+---@return nil
+---@public
 function RageUI.Menus:SetTotalItemsPerPage(Value)
-    self.Pagination.Total = Value;
-    self.Pagination.Maximum = Value;
-
+    self.Pagination.Total = tonumber(Value) or self.Pagination.Total
 end
 
+---SetRectangleBanner
+---@param R number
+---@param G number
+---@param B number
+---@param A number
+---@return nil
+---@public
 function RageUI.Menus:SetRectangleBanner(R, G, B, A)
     self.Rectangle = { R = tonumber(R) or 255, G = tonumber(G) or 255, B = tonumber(B) or 255, A = tonumber(A) or 255 }
     self.Sprite = nil
 end
 
+---SetSpriteBanner
+---@param TextureDictionary string
+---@param Texture string
+---@return nil
+---@public
 function RageUI.Menus:SetSpriteBanner(TextureDictionary, Texture)
     self.Sprite = { Dictionary = TextureDictionary or "commonmenu", Texture = Texture or "interaction_bgd" }
     self.Rectangle = nil
@@ -276,9 +331,11 @@ function RageUI.Menus:RemoveInstructionButton(button)
 end
 
 function RageUI.Menus:UpdateInstructionalButtons(Visible)
+
     if not Visible then
         return
     end
+
     BeginScaleformMovieMethod(self.InstructionalScaleform, "CLEAR_ALL")
     EndScaleformMovieMethod()
 

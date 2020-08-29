@@ -200,14 +200,6 @@ RageUI.Settings = {
                 { 0, 76 }, -- Vehicle Handbrake
             },
         },
-        Disabled = {
-            Controller = {
-
-            },
-            Keyboard = {
-                
-            },
-        }
     },
     Audio = {
         Id = nil,
@@ -407,12 +399,8 @@ function RageUI.Banner()
     if CurrentMenu ~= nil then
         if CurrentMenu() and (CurrentMenu.Display.Header) then
             RageUI.ItemsSafeZone(CurrentMenu)
-            if CurrentMenu.Sprite ~= nil then
-                if(CurrentMenu.Sprite.Dictionary == "commonmenu") then
-                    RenderSprite(CurrentMenu.Sprite.Dictionary, CurrentMenu.Sprite.Texture, CurrentMenu.X, CurrentMenu.Y, RageUI.Settings.Items.Title.Background.Width + CurrentMenu.WidthOffset, RageUI.Settings.Items.Title.Background.Height, CurrentMenu.Sprite.Color.R, CurrentMenu.Sprite.Color.G, CurrentMenu.Sprite.Color.B, CurrentMenu.Sprite.Color.A)
-                else 
-                    RenderSprite(CurrentMenu.Sprite.Dictionary, CurrentMenu.Sprite.Texture, CurrentMenu.X, CurrentMenu.Y, RageUI.Settings.Items.Title.Background.Width + CurrentMenu.WidthOffset, RageUI.Settings.Items.Title.Background.Height, nil)
-                end
+            if CurrentMenu.Sprite.Dictionary then
+                RenderSprite(CurrentMenu.Sprite.Dictionary, CurrentMenu.Sprite.Texture, CurrentMenu.X, CurrentMenu.Y, RageUI.Settings.Items.Title.Background.Width + CurrentMenu.WidthOffset, RageUI.Settings.Items.Title.Background.Height, nil)
             else
                 RenderRectangle(CurrentMenu.X, CurrentMenu.Y, RageUI.Settings.Items.Title.Background.Width + CurrentMenu.WidthOffset, RageUI.Settings.Items.Title.Background.Height, CurrentMenu.Rectangle.R, CurrentMenu.Rectangle.G, CurrentMenu.Rectangle.B, CurrentMenu.Rectangle.A)
             end
@@ -423,13 +411,13 @@ function RageUI.Banner()
                 ---@type number
                 local Glareheight = RageUI.Settings.Items.Title.Background.Height
                 ---@type number
-                local GlareX = 0.4486 - ((1920 - GetSafeZoneSize() * 1920) / 1920) + (CurrentMenu.X + (1920 - GetSafeZoneSize() * 1920) + CurrentMenu.WidthOffset) / 1920
+                local GlareX = CurrentMenu.X / 1920 + (CurrentMenu.SafeZoneSize.X / (64.399 - (CurrentMenu.WidthOffset * 0.065731)))
                 ---@type number
-                local GlareY = 0.4950 - ((1080 - GetSafeZoneSize() * 1080) / 1080) + (CurrentMenu.Y + (1080 - GetSafeZoneSize() * 1080)) / 1080     
+                local GlareY = CurrentMenu.Y / 1080 + CurrentMenu.SafeZoneSize.Y / 33.195020746888
                 RageUI.SetScaleformParams(ScaleformMovie, {
                     { name = "SET_DATA_SLOT", param = { GetGameplayCamRelativeHeading() } }
                 })
-                DrawScaleformMovie(ScaleformMovie, GlareX, GlareY, Glarewidth / 431, Glareheight / 96.75, 255, 255, 255, 255, 0)
+                DrawScaleformMovie(ScaleformMovie, GlareX, GlareY, Glarewidth / 430, Glareheight / 100, 255, 255, 255, 255, 0)
             end
             RenderText(CurrentMenu.Title, CurrentMenu.X + RageUI.Settings.Items.Title.Text.X + (CurrentMenu.WidthOffset / 2), CurrentMenu.Y + RageUI.Settings.Items.Title.Text.Y, 1, RageUI.Settings.Items.Title.Text.Scale, 255, 255, 255, 255, 1)
             RageUI.ItemOffset = RageUI.ItemOffset + RageUI.Settings.Items.Title.Background.Height
@@ -561,9 +549,9 @@ function RageUI.ItemsDescription(CurrentMenu, Description, Selected)
         if Selected and CurrentMenu.Description ~= Description then
             CurrentMenu.Description = Description or nil
             ---@type number
-            local DescriptionLineCount = GetLineCount(CurrentMenu.Description, CurrentMenu.X + SettingsDescription.Text.X, CurrentMenu.Y + SettingsDescription.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsDescription.Text.Scale, 255, 255, 255, 255, nil, false, false, SettingsDescription.Background.Width + (CurrentMenu.WidthOffset - 8.0))
+            local DescriptionLineCount = GetLineCount(CurrentMenu.Description, CurrentMenu.X + SettingsDescription.Text.X, CurrentMenu.Y + SettingsDescription.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsDescription.Text.Scale, 255, 255, 255, 255, nil, false, false, SettingsDescription.Background.Width + (CurrentMenu.WidthOffset - 5.0))
             if DescriptionLineCount > 1 then
-                CurrentMenu.DescriptionHeight = SettingsDescription.Background.Height * DescriptionLineCount + 3.5
+                CurrentMenu.DescriptionHeight = SettingsDescription.Background.Height * DescriptionLineCount
             else
                 CurrentMenu.DescriptionHeight = SettingsDescription.Background.Height + 7
             end
@@ -630,26 +618,3 @@ function RageUI.GetStyleAudio()
     return RageUI.Settings.Audio.Use or "RageUI"
 end
 
-function RageUI.AddControl(Menu, Type, Enabled, Group, Control)
-    if Enabled then
-        table.insert(Menu.Controls.Enabled[Type], {Group, Control})
-    else    
-        table.insert(Menu.Controls.Disabled[Type], {Group, Control})
-    end
-end
-
-function RageUI.RemoveControl(Menu, Type, Enabled, Group, Control)
-    if Enabled then
-        for key, control in pairs(Menu.Controls.Enabled[Type]) do
-            if control[1] == Group and control[2] == Control then
-                table.remove(Menu.Controls.Enabled[Type], key)
-            end
-        end
-    else    
-        for key, control in pairs(Menu.Controls.Disabled[Type]) do
-            if control[1] == Group and control[2] == Control then
-                table.remove(Menu.Controls.Disabled[Type], key)
-            end
-        end
-    end
-end
