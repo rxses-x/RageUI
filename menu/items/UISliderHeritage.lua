@@ -107,7 +107,7 @@ function RageUI.UISliderHeritage(Label, ItemIndex, Description, Actions, Value)
                     RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef, false)
                 elseif Selected then
                     if(Actions.onActive ~= nil) then
-                        Citizen.CreateThread(Actions.onActive)
+                        Actions.onActive()
                     end 
                 end
 

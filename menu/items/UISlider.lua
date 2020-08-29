@@ -156,7 +156,7 @@ function RageUI.Slider(Label, ProgressStart, ProgressMax, Description, Divider, 
                     RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef)
                 elseif Selected then
                     if(Actions.onActive ~= nil) then
-                        Citizen.CreateThread(Actions.onActive)
+                        Actions.onActive()
                     end 
                 end
             end

@@ -109,7 +109,7 @@ function RageUI.Button(Label, Description, Style, Enabled, Callback, Submenu)
                         end
                     elseif Selected then
                         if(Callback.onActive ~= nil) then
-                            Citizen.CreateThread(Callback.onActive)
+                            Callback.onActive()
                         end 
                     end
                 end

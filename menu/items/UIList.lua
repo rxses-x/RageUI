@@ -154,7 +154,7 @@ function RageUI.List(Label, Items, Index, Description, Style, Enabled, Actions, 
                     end
                 elseif Selected then
                     if(Actions.onActive ~= nil) then
-                        Citizen.CreateThread(Actions.onActive)
+                        Actions.onActive()
                     end 
                 end
             end
