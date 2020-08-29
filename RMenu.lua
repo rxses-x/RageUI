@@ -6,6 +6,8 @@
 
 ---@class RageUI
 RageUI = {}
+RageUI.Item = {}
+RageUI.Panel = {}
 
 ---@class RMenu
 RMenu = setmetatable({}, RMenu)
