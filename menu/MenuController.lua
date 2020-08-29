@@ -252,7 +252,10 @@ function RageUI.Controls()
                         if not Controls.Back.Pressed then
                             if IsDisabledControlJustPressed(Controls.Back.Keys[Index][1], Controls.Back.Keys[Index][2]) then
                                 Controls.Back.Pressed = true
-                                Citizen.Wait(10)
+                                Citizen.CreateThread(function()
+                                    Citizen.Wait(175)
+                                    Controls.Down.Pressed = false
+                                end)
                                 break
                             end
                         end
