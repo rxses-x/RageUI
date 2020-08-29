@@ -60,9 +60,11 @@ Citizen.CreateThread(function()
             RageUI.Checkbox('Checkbox', description, index.checkbox, {}, {
                 onChecked = function()
                     Visual.Subtitle("onChecked", 100)
+                    RMenu:Get('showcase', 'main').TitleFont = 7
                 end,
                 onUnChecked = function()
                     Visual.Subtitle("onUnChecked", 100)
+                    RMenu:Get('showcase', 'main').TitleFont = 1
                 end,
                 onSelected = function(Index)
                     index.checkbox = Index
@@ -88,7 +90,7 @@ Citizen.CreateThread(function()
             RageUI.UISliderHeritage('Heritage Item', index.heritage, description, {
                 onSliderChange = function(Float, Index)
                     index.heritage = Index;
-                    Visual.Subtitle("onSliderChange", 100)
+                    RMenu:Get('showcase', 'main').TitleScale = Float
                 end,
                 onSelected = function(Float, Index)
                     Visual.Subtitle("onSelected", 100)
