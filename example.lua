@@ -125,30 +125,31 @@ Citizen.CreateThread(function()
         end, function()
 
             RageUI.Grid(index.grid.default.x, index.grid.default.y, 'Top Text', 'Bottom Text', 'Left Text', 'Right Text', {
-                onSelected = function(X, Y)
+                onSelected = function(IndexX, IndexY, X, Y)
 
                 end,
-                onPositionChange = function(X, Y)
-                    index.grid.default.x = X
-                    index.grid.default.y = Y
+                onPositionChange = function(IndexX, IndexY, X, Y)
+                    Visual.Subtitle(string.format('x = %s, y = %s', X, Y), 1000)
+                    index.grid.default.x = IndexX
+                    index.grid.default.y = IndexY
                 end
             }, 1)
 
             RageUI.GridHorizontal(index.grid.horizontal.x, 'Left Text', 'Right Text', {
-                onSelected = function(X, Y)
+                onSelected = function(IndexX, IndexY, X, Y)
 
                 end,
-                onPositionChange = function(X, Y)
-                    index.grid.horizontal.x = X
+                onPositionChange = function(IndexX, IndexY, X, Y)
+                    index.grid.horizontal.x = IndexX
                 end
             }, 2)
 
             RageUI.GridVertical(index.grid.vertical.y, 'Top Text', 'Bottom Text', {
-                onSelected = function(X, Y)
+                onSelected = function(IndexX, IndexY, X, Y)
 
                 end,
-                onPositionChange = function(X, Y)
-                    index.grid.vertical.y = Y
+                onPositionChange = function(IndexX, IndexY, X, Y)
+                    index.grid.vertical.y = IndexY
                 end
             }, 3)
 

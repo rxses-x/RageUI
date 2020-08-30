@@ -89,7 +89,7 @@ local function UIGridPanel(Type, StartedX, StartedY, TopText, BottomText, LeftTe
                     X = math.round((CircleX - (CurrentMenu.X + Grid.Grid.X + (CurrentMenu.WidthOffset / 2) + 20) + (Grid.Circle.Width / 2)) / (Grid.Grid.Width - 40), 2)
                     Y = math.round((CircleY - (CurrentMenu.Y + Grid.Grid.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset + 20) + (Grid.Circle.Height / 2)) / (Grid.Grid.Height - 40), 2)
                     if (X ~= StartedX) and (Y ~= StartedY) then
-                        Action.onPositionChange(X, Y)
+                        Action.onPositionChange(X, Y, (X * 2 - 1), (Y * 2 - 1))
                     end
                     StartedX = X;
                     StartedY = Y;
@@ -106,7 +106,7 @@ local function UIGridPanel(Type, StartedX, StartedY, TopText, BottomText, LeftTe
                 local Audio = RageUI.Settings.Audio
                 RageUI.PlaySound(Audio[Audio.Use].Slider.audioName, Audio[Audio.Use].Slider.audioRef, true)
                 if (Action.onSelected ~= nil) then
-                    Action.onSelected(X, Y);
+                    Action.onSelected(X, Y, (X * 2 - 1), (Y * 2 - 1));
                 end
             end
 
