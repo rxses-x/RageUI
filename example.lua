@@ -167,7 +167,9 @@ Citizen.CreateThread(function()
                     index.color.primary[1] = MinimumIndex
                     index.color.primary[2] = CurrentIndex
                 end
-            }, 6)
+            }, 6, {
+                Seperator = { Text = "/" }
+            })
 
             RageUI.ColourPanel("Couleur de paco secondaire", RageUI.PanelColour.HairCut, index.color.secondary[1], index.color.secondary[2], {
                 onColorChange = function(MinimumIndex, CurrentIndex)

@@ -31,6 +31,7 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
     Menu.Display.Background = true;
     Menu.Display.Navigation = true;
     Menu.Display.InstructionalButton = true;
+    Menu.Display.PageCounter = true;
 
     Menu.Title = Title or ""
     Menu.TitleFont = 1
@@ -58,7 +59,7 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
     Menu.CursorStyle = 1
 
     if string.starts(Menu.Subtitle, "~") then
-        Menu.PageCounterColour = string.sub(Menu.Subtitle, 1, 3)
+        Menu.PageCounterColour = string.lower(string.sub(Menu.Subtitle, 1, 3))
     else
         Menu.PageCounterColour = ""
     end
@@ -152,6 +153,11 @@ function RageUI.Menus:DisplayInstructionalButton(boolean)
     return self.Display.InstructionalButton;
 end
 
+function RageUI.Menus:DisplayPageCounter(boolean)
+    self.Display.PageCounter= boolean;
+    return self.Display.PageCounter;
+end
+
 ---SetTitle
 ---@param Title string
 ---@return nil
@@ -223,7 +229,7 @@ function RageUI.Menus:SetSubtitle(Subtitle)
     self.Subtitle = string.upper(Subtitle) or string.upper(self.Subtitle)
 
     if string.starts(self.Subtitle, "~") then
-        self.PageCounterColour = string.sub(self.Subtitle, 1, 3)
+        self.PageCounterColour = string.lower(string.sub(self.Subtitle, 1, 3))
     else
         self.PageCounterColour = ""
     end
@@ -253,9 +259,9 @@ end
 ---@param Colors table
 ---@return nil
 ---@public
-function RageUI.Menus:EditSpriteColor(color)
+function RageUI.Menus:EditSpriteColor(R, G, B, A)
     if self.Sprite.Dictionary == "commonmenu" then
-        self.Sprite.Color = color
+        self.Sprite.Color = { R = tonumber(R) or 255, G = tonumber(G) or 255, B = tonumber(B) or 255, A = tonumber(A) or 255 }
     end
 end
 ---SetPosition
