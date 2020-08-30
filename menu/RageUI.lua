@@ -515,8 +515,8 @@ function RageUI.Render()
             RageUI.Options = 0
             RageUI.StatisticPanelCount = 0
             RageUI.ItemOffset = 0
-            if CurrentMenu.Controls.Back.Enabled and CurrentMenu.Closable then
-                if CurrentMenu.Controls.Back.Pressed then
+            if CurrentMenu.Controls.Back.Enabled then
+                if CurrentMenu.Controls.Back.Pressed and CurrentMenu.Closable then
                     CurrentMenu.Controls.Back.Pressed = false
                     local Audio = RageUI.Settings.Audio
                     RageUI.PlaySound(Audio[Audio.Use].Back.audioName, Audio[Audio.Use].Back.audioRef)
@@ -538,6 +538,8 @@ function RageUI.Render()
                         RageUI.NextMenu = nil
                         RageUI.Visible(CurrentMenu, false)
                     end
+                elseif CurrentMenu.Controls.Back.Pressed and not CurrentMenu.Closable then
+                    CurrentMenu.Controls.Back.Pressed = false
                 end
             end
             if RageUI.NextMenu ~= nil then
