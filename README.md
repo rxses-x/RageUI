@@ -34,7 +34,6 @@ The arrival of RageUI V2 offers you some new features and a lot of issues fixed 
 - Simplify item closure. RageUI use now a table to set actions.
 - A lot of code optimisations
 - Automatic management of items index
-- Better and more explicit [documentation](https://github.com/iTexZoz/RageUI-Docs).
 - Rewrite readme.
 
 # FAQ - Frequently Asked Questions
