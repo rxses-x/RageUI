@@ -8,6 +8,7 @@ print("^1 RageUI - testing file is started. ^0")
 
 RMenu.Add('showcase', 'main', RageUI.CreateMenu("RageUI", "Undefined for using SetSubtitle"))
 RMenu:Get('showcase', 'main'):SetSubtitle("RageUI Showcase")
+RMenu:Get('showcase', 'main'):EditSpriteColor(255, 0, 106, 255)
 RMenu:Get('showcase', 'main'):DisplayGlare(false);
 RMenu:Get('showcase', 'main').Closed = function()
     print('Closed Showcase Menu')
@@ -42,9 +43,9 @@ local index = {
 
 local description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur"
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while (true) do
-        Citizen.Wait(1.0)
+        Wait(1.0)
 
         RageUI.IsVisible(RMenu:Get('showcase', 'main'), function()
 
@@ -178,7 +179,5 @@ Citizen.CreateThread(function()
                 end
             }, 6)
         end)
-
-
     end
 end)
