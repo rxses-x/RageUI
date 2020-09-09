@@ -20,8 +20,8 @@ local GridType = RageUI.Enum {
 
 local GridSprite = {
     [GridType.Default] = { Dictionary = "pause_menu_pages_char_mom_dad", Texture = "nose_grid", },
-    [GridType.Horizontal] = { Dictionary = "RageUI_", Texture = "horizontal_grid", },
-    [GridType.Vertical] = { Dictionary = "RageUI_", Texture = "vertical_grid", },
+    [GridType.Horizontal] = { Dictionary = "RageUI", Texture = "horizontal_grid", },
+    [GridType.Vertical] = { Dictionary = "RageUI", Texture = "vertical_grid", },
 }
 
 local Grid = {
@@ -36,7 +36,7 @@ local Grid = {
     },
 }
 
-local function UIGridPanel(Type, StartedX, StartedY, TopText, BottomText, LeftText, RightText, Action, Index)
+local function GridPanel(Type, StartedX, StartedY, TopText, BottomText, LeftText, RightText, Action, Index)
     local CurrentMenu = RageUI.CurrentMenu
     if CurrentMenu ~= nil then
         if CurrentMenu() and ((CurrentMenu.Index == Index)) then
@@ -114,14 +114,14 @@ local function UIGridPanel(Type, StartedX, StartedY, TopText, BottomText, LeftTe
     end
 end
 
-function RageUI.Grid(StartedX, StartedY, TopText, BottomText, LeftText, RightText, Action, Index)
-    UIGridPanel(GridType.Default, StartedX, StartedY, TopText, BottomText, LeftText, RightText, Action, Index)
+function RageUI.Panel.Grid(StartedX, StartedY, TopText, BottomText, LeftText, RightText, Action, Index)
+    GridPanel(GridType.Default, StartedX, StartedY, TopText, BottomText, LeftText, RightText, Action, Index)
 end
 
-function RageUI.GridHorizontal(StartedX, LeftText, RightText, Action, Index)
-    UIGridPanel(GridType.Horizontal, StartedX, nil, nil, nil, LeftText, RightText, Action, Index)
+function RageUI.Panel.GridHorizontal(StartedX, LeftText, RightText, Action, Index)
+    GridPanel(GridType.Horizontal, StartedX, nil, nil, nil, LeftText, RightText, Action, Index)
 end
 
-function RageUI.GridVertical(StartedY, TopText, BottomText, Action, Index)
-    UIGridPanel(GridType.Vertical, nil, StartedY, TopText, BottomText, nil, nil, Action, Index)
+function RageUI.Panel.GridVertical(StartedY, TopText, BottomText, Action, Index)
+    GridPanel(GridType.Vertical, nil, StartedY, TopText, BottomText, nil, nil, Action, Index)
 end

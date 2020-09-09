@@ -6,10 +6,15 @@
 
 print("^1 RageUI - testing file is started. ^0")
 
-RMenu.Add('showcase', 'main', RageUI.CreateMenu("RageUI", "Undefined for using SetSubtitle"))
-RMenu:Get('showcase', 'main'):SetSubtitle("RageUI Showcase")
-RMenu:Get('showcase', 'main'):EditSpriteColor(255, 0, 106, 255)
-RMenu:Get('showcase', 'main'):DisplayGlare(false);
+RMenu.Add('showcase', 'main', RageUI.CreateMenu("Menu", ""))
+RMenu:Get('showcase', 'main'):SetSubtitle("~b~Subtitle")
+-- RMenu:Get('showcase', 'main'):DisplaySubtitle(false)
+-- RMenu:Get('showcase', 'main'):SetSpriteBanner("shopui_title_highendfashion", "shopui_title_highendfashion")
+-- RMenu:Get('showcase', 'main'):EditSpriteColor(255, 0, 106)
+RMenu:Get('showcase', 'main'):SetStyleSize(100)
+RMenu:Get('showcase', 'main'):DisplayGlare(true);
+-- RMenu:Get('showcase', 'main'):DisplayNavigation(false);
+-- RMenu:Get('showcase', 'main'):SetPageCounter("Test");
 RMenu:Get('showcase', 'main').Closed = function()
     print('Closed Showcase Menu')
 end;
@@ -19,9 +24,9 @@ RMenu:Get('showcase', 'main').onIndexChange = function(Index)
     print(Index)
 end
 
-Keys.Register('E', 'E', 'Open RageUI Showcase menu default.', function()
-    RageUI.Visible(RMenu:Get('showcase', 'main'), not RageUI.Visible(RMenu:Get('showcase', 'main')))
-end)
+-- Keys.Register('E', 'E', 'Open RageUI Showcase menu default.', function()
+--     RageUI.Visible(RMenu:Get('showcase', 'main'), not RageUI.Visible(RMenu:Get('showcase', 'main')))
+-- end)
 
 local index = {
     checkbox = false,
@@ -41,13 +46,14 @@ local index = {
     },
 }
 
-local description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur"
+local description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, Lorem esse do aliquip reprehenderit dolor in culpa"
 
 CreateThread(function()
     while (true) do
         Wait(1.0)
 
         RageUI.IsVisible(RMenu:Get('showcase', 'main'), function()
+
 
             RageUI.Button('Basic Items', description, {}, true, {
                 onHovered = function()
@@ -61,11 +67,9 @@ CreateThread(function()
             RageUI.Checkbox('Checkbox', description, index.checkbox, {}, {
                 onChecked = function()
                     Visual.Subtitle("onChecked", 100)
-                    RMenu:Get('showcase', 'main').TitleFont = 7
                 end,
                 onUnChecked = function()
                     Visual.Subtitle("onUnChecked", 100)
-                    RMenu:Get('showcase', 'main').TitleFont = 1
                 end,
                 onSelected = function(Index)
                     index.checkbox = Index
@@ -91,7 +95,6 @@ CreateThread(function()
             RageUI.UISliderHeritage('Heritage Item', index.heritage, description, {
                 onSliderChange = function(Float, Index)
                     index.heritage = Index;
-                    RMenu:Get('showcase', 'main').TitleScale = Float
                 end,
                 onSelected = function(Float, Index)
                     Visual.Subtitle("onSelected", 100)
@@ -136,48 +139,48 @@ CreateThread(function()
                 end
             }, 1)
 
-            RageUI.GridHorizontal(index.grid.horizontal.x, 'Left Text', 'Right Text', {
-                onSelected = function(IndexX, IndexY, X, Y)
+            -- RageUI.GridHorizontal(index.grid.horizontal.x, 'Left Text', 'Right Text', {
+            --     onSelected = function(IndexX, IndexY, X, Y)
 
-                end,
-                onPositionChange = function(IndexX, IndexY, X, Y)
-                    index.grid.horizontal.x = IndexX
-                end
-            }, 2)
+            --     end,
+            --     onPositionChange = function(IndexX, IndexY, X, Y)
+            --         index.grid.horizontal.x = IndexX
+            --     end
+            -- }, 2)
 
-            RageUI.GridVertical(index.grid.vertical.y, 'Top Text', 'Bottom Text', {
-                onSelected = function(IndexX, IndexY, X, Y)
+            -- RageUI.GridVertical(index.grid.vertical.y, 'Top Text', 'Bottom Text', {
+            --     onSelected = function(IndexX, IndexY, X, Y)
 
-                end,
-                onPositionChange = function(IndexX, IndexY, X, Y)
-                    index.grid.vertical.y = IndexY
-                end
-            }, 3)
+            --     end,
+            --     onPositionChange = function(IndexX, IndexY, X, Y)
+            --         index.grid.vertical.y = IndexY
+            --     end
+            -- }, 3)
 
-            RageUI.PercentagePanel(index.percentage, 'Header Text', 'Min Text', 'Max Text', {
-                onSelected = function(Percentage)
+            -- RageUI.PercentagePanel(index.percentage, 'Header Text', 'Min Text', 'Max Text', {
+            --     onSelected = function(Percentage)
 
-                end,
-                onProgressChange = function(Percentage)
-                    index.percentage = Percentage
-                end
-            }, 4)
+            --     end,
+            --     onProgressChange = function(Percentage)
+            --         index.percentage = Percentage
+            --     end
+            -- }, 4)
 
-            RageUI.ColourPanel("Couleur de Paco", RageUI.PanelColour.HairCut, index.color.primary[1], index.color.primary[2], {
-                onColorChange = function(MinimumIndex, CurrentIndex)
-                    index.color.primary[1] = MinimumIndex
-                    index.color.primary[2] = CurrentIndex
-                end
-            }, 6, {
-                Seperator = { Text = "/" }
-            })
+            -- RageUI.ColourPanel("Couleur de Paco", RageUI.PanelColour.HairCut, index.color.primary[1], index.color.primary[2], {
+            --     onColorChange = function(MinimumIndex, CurrentIndex)
+            --         index.color.primary[1] = MinimumIndex
+            --         index.color.primary[2] = CurrentIndex
+            --     end
+            -- }, 6, {
+            --     Seperator = { Text = "/" }
+            -- })
 
-            RageUI.ColourPanel("Couleur de paco secondaire", RageUI.PanelColour.HairCut, index.color.secondary[1], index.color.secondary[2], {
-                onColorChange = function(MinimumIndex, CurrentIndex)
-                    index.color.secondary[1] = MinimumIndex
-                    index.color.secondary[2] = CurrentIndex
-                end
-            }, 6)
+            -- RageUI.ColourPanel("Couleur de paco secondaire", RageUI.PanelColour.HairCut, index.color.secondary[1], index.color.secondary[2], {
+            --     onColorChange = function(MinimumIndex, CurrentIndex)
+            --         index.color.secondary[1] = MinimumIndex
+            --         index.color.secondary[2] = CurrentIndex
+            --     end
+            -- }, 6)
         end)
     end
 end)

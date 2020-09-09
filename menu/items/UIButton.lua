@@ -17,7 +17,7 @@ local SettingsButton = {
 ---@param Submenu table
 ---@return nil
 ---@public
-function RageUI.Button(Label, Description, Style, Enabled, Callback, Submenu)
+function RageUI.Item.Button(Label, Description, Style, Enabled, Callback, Submenu)
 
     ---@type table
     local CurrentMenu = RageUI.CurrentMenu;

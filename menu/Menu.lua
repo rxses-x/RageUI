@@ -34,10 +34,12 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
     Menu.Display.PageCounter = true;
 
     Menu.Title = Title or ""
-    Menu.TitleFont = 1
-    Menu.TitleScale = 1.2
-    Menu.Subtitle = string.upper(Subtitle) or nil
-    Menu.SubtitleHeight = -37
+    Menu.TitleFont = RageUI.Settings.Items.Title.Text.Font
+    Menu.TitleScale = RageUI.Settings.Items.Title.Text.Scale
+    Menu.Subtitle = tostring(Subtitle)
+    Menu.SubtitleFont = RageUI.Settings.Items.Subtitle.Text.Font
+    Menu.SubtitleScale = RageUI.Settings.Items.Subtitle.Text.Scale
+    Menu.SubtitleHeight = 0
     Menu.Description = nil
     Menu.DescriptionHeight = RageUI.Settings.Items.Description.Background.Height
     Menu.X = X or 0
@@ -56,10 +58,11 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
     Menu.Options = 0
     Menu.Closable = true
     Menu.InstructionalScaleform = RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
+    Menu.GlareScaleform = RequestScaleformMovie("MP_MENU_GLARE")
     Menu.CursorStyle = 1
 
     if string.starts(Menu.Subtitle, "~") then
-        Menu.PageCounterColour = string.lower(string.sub(Menu.Subtitle, 1, 3))
+        Menu.PageCounterColour = tostring(string.sub(Menu.Subtitle, 1, 3))
     else
         Menu.PageCounterColour = ""
     end
@@ -76,7 +79,6 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
 
     Citizen.CreateThread(function()
         if not HasScaleformMovieLoaded(Menu.InstructionalScaleform) then
-            Menu.InstructionalScaleform = RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
             while not HasScaleformMovieLoaded(Menu.InstructionalScaleform) do
                 Citizen.Wait(0)
             end
@@ -84,7 +86,6 @@ function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName
     end)
 
     Citizen.CreateThread(function()
-        local ScaleformMovie = RequestScaleformMovie("MP_MENU_GLARE")
         while not HasScaleformMovieLoaded(ScaleformMovie) do
             Citizen.Wait(0)
         end
@@ -226,10 +227,10 @@ end
 ---@public
 function RageUI.Menus:SetSubtitle(Subtitle)
 
-    self.Subtitle = string.upper(Subtitle) or string.upper(self.Subtitle)
+    self.Subtitle = tostring(Subtitle) or tostring(self.Subtitle)
 
     if string.starts(self.Subtitle, "~") then
-        self.PageCounterColour = string.lower(string.sub(self.Subtitle, 1, 3))
+        self.PageCounterColour = tostring(string.sub(self.Subtitle, 1, 3))
     else
         self.PageCounterColour = ""
     end
@@ -260,7 +261,7 @@ end
 ---@return nil
 ---@public
 function RageUI.Menus:EditSpriteColor(R, G, B, A)
-    if self.Sprite.Dictionary == "commonmenu" then
+    if self.Sprite.Dictionary ~= nil then
         self.Sprite.Color = { R = tonumber(R) or 255, G = tonumber(G) or 255, B = tonumber(B) or 255, A = tonumber(A) or 255 }
     end
 end

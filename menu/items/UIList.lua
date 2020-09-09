@@ -15,7 +15,7 @@ local SettingsList = {
     Text = { X = 403, Y = 3, Scale = 0.35 },
 }
 
-function RageUI.List(Label, Items, Index, Description, Style, Enabled, Actions, Submenu)
+function RageUI.Item.List(Label, Items, Index, Description, Style, Enabled, Actions, Submenu)
     ---@type table
     local CurrentMenu = RageUI.CurrentMenu;
 
@@ -112,9 +112,8 @@ function RageUI.List(Label, Items, Index, Description, Style, Enabled, Actions, 
                     error("UICheckBox Style is not a `table`")
                 end
 
-                LeftArrowHovered = RageUI.IsMouseInBounds(CurrentMenu.X + SettingsList.Text.X + CurrentMenu.WidthOffset - RightOffset + CurrentMenu.SafeZoneSize.X, CurrentMenu.Y + SettingsList.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset + 2.5  + CurrentMenu.SafeZoneSize.Y , 15, 22.5)
-
-                RightArrowHovered = RageUI.IsMouseInBounds(CurrentMenu.X + SettingsList.Text.X + CurrentMenu.WidthOffset + CurrentMenu.SafeZoneSize.X - RightOffset - MeasureStringWidth(ListText, 0, SettingsList.Text.Scale), CurrentMenu.Y + SettingsList.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset + 2.5 + CurrentMenu.SafeZoneSize.Y , 15, 22.5)
+                RightArrowHovered = RageUI.IsMouseInBounds(CurrentMenu.X + SettingsList.Text.X + CurrentMenu.WidthOffset - RightOffset + CurrentMenu.SafeZoneSize.X, CurrentMenu.Y + SettingsList.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset + 2.5  + CurrentMenu.SafeZoneSize.Y , 15, 22.5)
+                LeftArrowHovered = RageUI.IsMouseInBounds(CurrentMenu.X + SettingsList.Text.X + CurrentMenu.WidthOffset + CurrentMenu.SafeZoneSize.X - RightOffset - MeasureStringWidth(ListText, 0, SettingsList.Text.Scale), CurrentMenu.Y + SettingsList.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset + 2.5 + CurrentMenu.SafeZoneSize.Y , 15, 22.5)
                 RageUI.ItemOffset = RageUI.ItemOffset + SettingsButton.Rectangle.Height
 
                 RageUI.ItemsDescription(CurrentMenu, Description, Selected);
@@ -154,8 +153,8 @@ function RageUI.List(Label, Items, Index, Description, Style, Enabled, Actions, 
                     end
                 elseif Selected then
                     if(Actions.onActive ~= nil) then
-                        Actions.onActive()
-                    end 
+                        Actions.onActive(Index)
+                    end
                 end
             end
 

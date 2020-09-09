@@ -19,7 +19,7 @@ for i = 1, 10 do
     table.insert(Items, i)
 end
 
-function RageUI.UISliderHeritage(Label, ItemIndex, Description, Actions, Value)
+function RageUI.Item.UISliderHeritage(Label, ItemIndex, Description, Actions, Value)
 
     local CurrentMenu = RageUI.CurrentMenu;
     local Audio = RageUI.Settings.Audio
